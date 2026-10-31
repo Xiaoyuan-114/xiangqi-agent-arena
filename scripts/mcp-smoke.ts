@@ -18,14 +18,20 @@ try {
   const { tools } = await client.listTools();
   const toolNames = tools.map((tool) => tool.name);
   console.log(`[smoke] tools: ${toolNames.join(', ')}`);
-  if (!toolNames.includes('ping')) {
-    throw new Error('ping 工具未注册');
-  }
 
-  const result = await client.callTool({ name: 'ping', arguments: { message: 'hello' } });
-  console.log(`[smoke] result: ${JSON.stringify(result.content)}`);
-  if (!JSON.stringify(result.content).includes('pong: hello')) {
-    throw new Error('ping 返回内容不符合预期');
+  const required = [
+    'join_game',
+    'set_ready',
+    'get_game_state',
+    'list_legal_moves',
+    'make_move',
+    'wait_for_update',
+    'resign_game',
+    'leave_game',
+  ];
+  const missing = required.filter((name) => !toolNames.includes(name));
+  if (missing.length > 0) {
+    throw new Error(`缺少工具：${missing.join(', ')}`);
   }
 
   console.log('[smoke] MCP stdio handshake OK');
