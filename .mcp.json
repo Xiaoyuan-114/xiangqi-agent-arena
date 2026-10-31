@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "xiangqi": {
+      "command": "node",
+      "args": ["dist/mcp/index.js"],
+      "env": {
+        "XIANGQI_SERVER_URL": "http://127.0.0.1:8787",
+        "XIANGQI_AGENT_NAME": "AI Agent"
+      }
+    }
+  }
+}
