@@ -1,0 +1,164 @@
+:root {
+  color-scheme: light;
+  --paper: #f4ead8;
+  --paper-deep: #e6d3b3;
+  --ink: #2b2118;
+  --ink-soft: #6f5c47;
+  --red: #a3312a;
+  --gold: #b08a4f;
+  --line: rgba(74, 50, 29, 0.22);
+  font-family: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 249, 235, 0.9), transparent 45%),
+    linear-gradient(145deg, #efe0c6 0%, #dcc4a1 100%);
+}
+
+.shell {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 48px 24px;
+}
+
+.board-veil {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.34;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  transform: rotate(-8deg);
+  mask-image: radial-gradient(circle at center, #000 10%, transparent 68%);
+}
+
+.hero {
+  position: relative;
+  width: min(560px, 100%);
+  padding: 56px 48px;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(255, 250, 240, 0.86), rgba(243, 229, 207, 0.74));
+  border: 1px solid rgba(120, 86, 49, 0.28);
+  box-shadow:
+    0 28px 70px rgba(78, 50, 20, 0.18),
+    inset 0 0 0 6px rgba(255, 252, 245, 0.4);
+  backdrop-filter: blur(6px);
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.55;
+}
+
+.hero::before {
+  top: 14px;
+  left: 14px;
+  border-width: 1px 0 0 1px;
+}
+
+.hero::after {
+  right: 14px;
+  bottom: 14px;
+  border-width: 0 1px 1px 0;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  color: var(--ink-soft);
+}
+
+.brand {
+  margin: 0;
+  font-size: clamp(76px, 16vw, 112px);
+  line-height: 0.9;
+  font-weight: 500;
+  color: var(--red);
+  text-shadow: 0 4px 0 rgba(120, 43, 33, 0.12);
+}
+
+.hero h2 {
+  margin: 20px 0 10px;
+  font-size: clamp(21px, 4vw, 28px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.subtitle {
+  margin: 0 0 34px;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  border: 1px solid rgba(74, 50, 29, 0.18);
+  background: rgba(255, 252, 244, 0.6);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.status-online .status-dot {
+  background: #4f7a52;
+  box-shadow: 0 0 0 4px rgba(79, 122, 82, 0.12);
+}
+
+.status-offline .status-dot {
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(163, 49, 42, 0.12);
+}
+
+.status-checking .status-dot {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.note {
+  margin: 28px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+  opacity: 0.75;
+  letter-spacing: 0.08em;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 44px 24px;
+  }
+}

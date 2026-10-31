@@ -1,0 +1,45 @@
+{
+  "name": "xiangqi-agent-arena",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "中国象棋对弈室：支持 MCP Agent 与人类对弈",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c blue,green \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "tsx watch src/server/index.ts",
+    "dev:web": "vite",
+    "build": "npm run build:web && npm run build:server && npm run build:mcp",
+    "build:web": "vite build",
+    "build:server": "tsup src/server/index.ts --format esm --out-dir dist/server --clean --sourcemap",
+    "build:mcp": "tsup src/mcp/index.ts --format esm --out-dir dist/mcp --clean --sourcemap",
+    "start": "node dist/server/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke:mcp": "npm run build:mcp && tsx scripts/mcp-smoke.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
+    "express": "^5.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.4.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^10.0.6",
+    "tsup": "^9.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}
