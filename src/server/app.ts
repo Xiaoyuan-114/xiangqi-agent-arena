@@ -1,5 +1,6 @@
 import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
+import path from 'node:path';
 import type {
   ApiErrorBody,
   ApiErrorCode,
@@ -105,7 +106,11 @@ function waitForRoomChange(
   });
 }
 
-export function createApp(room: Room = new Room()) {
+export interface AppOptions {
+  staticDir?: string;
+}
+
+export function createApp(room: Room = new Room(), options: AppOptions = {}) {
   const app = express();
   app.disable('x-powered-by');
   app.use(express.json({ limit: '32kb' }));
@@ -170,10 +175,10 @@ export function createApp(room: Room = new Room()) {
     writeSnapshotEvent(response, room.getSnapshot());
 
     const unsubscribe = room.subscribe((snapshot) => {
-      writeSnapshotEvent(response, snapshot);
+      if (!response.writableEnded) writeSnapshotEvent(response, snapshot);
     });
     const heartbeat = setInterval(() => {
-      response.write(': ping\n\n');
+      if (!response.writableEnded) response.write(': ping\n\n');
     }, 15_000);
 
     request.on('close', () => {
@@ -264,6 +269,18 @@ export function createApp(room: Room = new Room()) {
     const participant = requireParticipant(request);
     response.json({ snapshot: room.reset(participant) });
   });
+
+  if (options.staticDir) {
+    const staticDir = options.staticDir;
+    app.use(express.static(staticDir, { index: 'index.html' }));
+    app.use((request, response, next) => {
+      if (request.method !== 'GET' || request.path.startsWith('/api')) {
+        next();
+        return;
+      }
+      response.sendFile(path.join(staticDir, 'index.html'));
+    });
+  }
 
   app.use('/api', (_request, response) => {
     response.status(404).json({
